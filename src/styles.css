@@ -6,21 +6,21 @@
   --bg2: #070a14;
 
   /* Texto */
-  --text: rgba(255,255,255,0.92);
+  --text: rgb(255, 255, 255);
   --muted: rgba(255,255,255,0.72);
 
   /* Glass */
   --panel: rgba(255,255,255,0.06);
-  --panel2: rgba(255,255,255,0.085);
+  --panel2: rgba(49, 10, 76, 0.74);
   --line: rgba(255,255,255,0.14);
 
   /* Acentos (Roxo + Verde) */
-  --primary: #a78bfa; /* lilás/roxo claro para destacar */
-  --accent:  #22c55e; /* verde */
+  --primary: #735cb8; /* lilás/roxo claro para destacar */
+  --accent:  #1dee69; /* verde */
   --primaryDeep: #7c3aed; /* roxo mais forte */
 
   /* Sombra */
-  --shadow: 0 22px 70px rgba(0,0,0,0.45);
+  --shadow: 0 22px 70px rgba(104, 102, 102, 0.45);
   --radius: 22px;
 }
 
@@ -63,7 +63,17 @@ body{
 
 /* ===== Layout base ===== */
 .page { min-height: 100%; display:flex; flex-direction:column; }
-.container { width:min(1120px, calc(100% - 32px)); margin:0 auto; padding: 22px 0 52px; }
+
+/* Ajustado: container com largura e padding melhor */
+.container{
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 26px 0 60px;
+}
+
+@media (max-width: 980px){
+  .container{ width: min(1100px, calc(100% - 28px)); }
+}
 
 /* ===== Header ===== */
 .header{
@@ -106,8 +116,8 @@ body{
 .hero{
   display:grid;
   grid-template-columns: 1.08fr 0.92fr;
-  gap: 18px;
-  padding-top: 12px;
+  gap: 26px;          /* mais ar */
+  padding-top: 26px;  /* mais respiro */
   align-items: start;
 }
 
@@ -151,10 +161,22 @@ body{
   color: var(--muted);
   font-size: 16px;
   line-height: 1.65;
+  max-width: 68ch; /* leitura confortável */
 }
 
-.heroActions{ display:flex; gap: 10px; margin: 16px 0 12px; flex-wrap: wrap; }
-.heroBadges{ display:flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.heroActions{
+  display:flex;
+  gap: 10px;
+  margin: 18px 0 14px;
+  flex-wrap: wrap;
+}
+
+.heroBadges{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
 
 /* ===== Botões ===== */
 .btn{
@@ -186,35 +208,8 @@ body{
   background: rgba(255,255,255,0.04);
 }
 
-/* ===== Badges / Pills ===== */
-.badge{
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.86);
-}
-
 /* ===== Coluna direita (foto) ===== */
 .heroMedia{ display:flex; flex-direction: column; gap: 14px; }
-
-.photoFrame{
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.04);
-  box-shadow: var(--shadow);
-  padding: 10px;
-}
-
-.heroPhoto{
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
-  border-radius: calc(var(--radius) - 8px);
-  display:block;
-  filter: saturate(1.05) contrast(1.02);
-}
 
 .photoFrame{
   position: relative;
@@ -257,9 +252,9 @@ body{
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 340px;            /* ajuste se quiser mais alta */
-  object-fit: cover;        /* não distorce */
-  object-position: center;  /* centraliza rosto */
+  height: 340px;
+  object-fit: cover;
+  object-position: center;
   border-radius: calc(var(--radius) - 4px);
   display:block;
   filter: saturate(1.05) contrast(1.04);
@@ -287,14 +282,16 @@ body{
 }
 
 /* ===== Seções ===== */
-.section{ padding: 30px 0 10px; }
+/* Ajustado: MUITO mais respiro + scroll offset pro header sticky */
+.section{
+  padding: 84px 0;
+  scroll-margin-top: 96px;
+}
 
 .sectionHeader{
-  display:flex;
-  align-items:flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 14px;
+  display: grid;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
 .sectionEyebrow{
@@ -308,7 +305,7 @@ body{
 .sectionTitleAlt{
   margin: 0;
   font-family: "Space Grotesk", system-ui, sans-serif;
-  font-size: 26px;
+  font-size: 30px; /* mais presença */
   line-height: 1.1;
   font-weight: 700;
   background: linear-gradient(90deg, var(--primary), var(--accent));
@@ -318,9 +315,10 @@ body{
 }
 
 .sectionDesc{
-  margin:0;
+  margin: 0;
   color: var(--muted);
-  max-width: 520px;
+  max-width: 70ch;
+  line-height: 1.65;
 }
 
 /* ===== Cards ===== */
@@ -328,24 +326,24 @@ body{
   background: linear-gradient(180deg, var(--panel2), var(--panel));
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px; /* mais ar */
   box-shadow: var(--shadow);
 }
 
 .grid2{
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
+  gap: 18px;
+  margin-top: 18px;
 }
 
-.muted{ color: var(--muted); }
+.muted{ color: var(--muted); max-width: 70ch; }
 .small{ font-size: 12px; }
 
 /* ===== Pills (skills) ===== */
-.pillGrid{ display:flex; flex-wrap:wrap; gap:10px; }
+.pillGrid{ display:flex; flex-wrap:wrap; gap: 10px; margin-top: 6px; }
 .pill{
-  padding: 10px 12px;
+  padding: 9px 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(255,255,255,0.05);
@@ -357,8 +355,8 @@ body{
 .projectsGrid{
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
+  gap: 18px;
+  margin-top: 18px;
 }
 
 .projectHeader{
@@ -368,13 +366,13 @@ body{
   gap: 10px;
 }
 
-.stackRow{ display:flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-
-.bullets{
-  margin: 12px 0 0;
+ .bullets{
+  font-size: 13px;
+  margin-bottom: 20px;
   padding-left: 18px;
   color: var(--muted);
-  line-height: 1.60;
+  line-height: 1.40
+  ;
 }
 
 .projectLinks{
@@ -446,7 +444,8 @@ body{
 .servicesGrid{
   display:grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: 18px;
+  margin-top: 18px;
 }
 
 .serviceCard{
@@ -502,7 +501,11 @@ body{
   .projectsGrid{ grid-template-columns: 1fr; }
   .grid2{ grid-template-columns: 1fr; }
   .servicesGrid{ grid-template-columns: 1fr; }
-  .sectionHeader{ align-items: start; flex-direction: column; }
+}
+
+/* Ajuste: sections menores no mobile (refina a leitura) */
+@media (max-width: 980px){
+  .section{ padding: 58px 0; }
 }
 
 /* Acessibilidade */
@@ -514,4 +517,38 @@ body{
     transition: none !important;
   }
   .fx-card:hover{ transform:none; }
+}
+.material-symbols-rounded{
+  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 22;
+  font-size: 18px;
+  line-height: 1;
+  vertical-align: -3px;
+}
+
+/* Contato com ícones */
+.contactGrid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 700px){
+  .contactGrid{ grid-template-columns: 1fr; }
+}
+
+.contactLink{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.90);
+  text-decoration: none;
+}
+
+.contactLink:hover{
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(167,139,250,0.28);
 }
