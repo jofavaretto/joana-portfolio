@@ -552,3 +552,180 @@ body{
   background: rgba(255,255,255,0.08);
   border-color: rgba(167,139,250,0.28);
 }
+
+
+/* ===== Modal Projetos ===== */
+.modalOverlay{
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.modalBackdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  border: 0;
+}
+
+.modalCard{
+  position: relative;
+  width: min(980px, 100%);
+  max-height: min(86vh, 900px);
+  overflow: auto;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+  box-shadow: 0 40px 120px rgba(0,0,0,0.60);
+  backdrop-filter: blur(14px);
+  padding: 18px;
+  z-index: 201;
+}
+
+.modalClose{
+  position: sticky;
+  top: 10px;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.25);
+  color: rgba(255,255,255,0.90);
+  cursor: pointer;
+}
+
+.modalHeader{
+  margin-top: 8px;
+  margin-bottom: 14px;
+}
+
+.modalTitle{
+  margin: 0 0 6px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.modalDesc{
+  margin: 0;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+}
+
+/* ===== Gallery ===== */
+.gallery{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.18);
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.galleryMain{
+  display: grid;
+  grid-template-columns: 46px 1fr 46px;
+  align-items: center;
+  gap: 10px;
+}
+
+.galleryNav{
+  height: 46px;
+  width: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.90);
+  cursor: pointer;
+}
+
+.galleryNav:disabled{
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.galleryImg{
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.thumbRow{
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.thumb{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  padding: 4px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.thumb img{
+  width: 78px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.thumb.active{
+  border-color: rgba(167,139,250,0.45);
+  box-shadow: 0 10px 30px rgba(167,139,250,0.12);
+}
+
+.emptyGallery{
+  border-radius: 18px;
+  border: 1px dashed rgba(255,255,255,0.20);
+  padding: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+/* ===== Modal layout ===== */
+.modalGrid{
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+}
+
+.modalBox{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  padding: 14px;
+}
+
+.modalBoxTitle{
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.modalLinks{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Responsivo modal */
+@media (max-width: 860px){
+  .modalGrid{ grid-template-columns: 1fr; }
+  .galleryImg{ height: 300px; }
+}

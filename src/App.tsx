@@ -1,6 +1,9 @@
 import "./styles.css";
+import { useState } from "react";
 import { projects } from "./data/projects";
+import type { Project } from "./data/projects";
 import AICircuitBackground from "./components/AICircuitBackground";
+import ProjectModal from "./components/ProjectModal";
 
 function SectionTitle({
   eyebrow,
@@ -24,6 +27,7 @@ function SectionTitle({
 
 export default function App() {
   const year = new Date().getFullYear();
+  const [selected, setSelected] = useState<Project | null>(null);
 
   return (
     <div className="page">
@@ -53,9 +57,8 @@ export default function App() {
             <p className="heroSubtitle">Portfólio Profissional</p>
 
             <p className="heroLead">
-              Foco em Front-End React alido em componentização, UI consistente e integração com APIs.
-              Entrego com organização, refino e atenção à experiência do usuário. Com integração a APIs REST/JSON, código limpo e práticas de desenvolvimento sustentável. 
-              Adoro aprender e evoluir.
+              Front-End React com foco em componentização, UI consistente e integração com APIs.
+              Entrego com organização, refino e atenção à experiência do usuário.
             </p>
 
             <div className="heroActions">
@@ -110,14 +113,16 @@ export default function App() {
 
             <article className="serviceCard">
               <div className="serviceIcon">
-                <span className="material-symbols-rounded" aria-hidden="true">speed</span>
+                <span className="material-symbols-rounded" aria-hidden="true">
+                  speed
+                </span>
               </div>
               <h3>Refino e performance</h3>
               <p>Correção de bugs, melhorias incrementais e noções de acessibilidade e desempenho.</p>
             </article>
 
             <article className="serviceCard">
-              <div className="serviceIcon">⇄</div>  
+              <div className="serviceIcon">⇄</div>
               <h3>Entrega iterativa</h3>
               <p>
                 Evolução com feedback e alinhamento com produto/design, focando valor para o usuário.
@@ -186,11 +191,22 @@ export default function App() {
 
         {/* PROJETOS */}
         <section id="projetos" className="section">
-          <SectionTitle eyebrow="Portfólio" title="Projetos" />
+          <SectionTitle
+            eyebrow="Portfólio"
+            title="Projetos"
+            subtitle="Clique em um projeto para ver detalhes, imagens e links."
+          />
 
           <div className="projectsGrid">
             {projects.map((p) => (
-              <article key={p.title} className="card projectCard fx-card">
+              <article
+                key={p.title}
+                className="card projectCard fx-card"
+                role="button"
+                tabIndex={0}
+                onClick={() => setSelected(p)}
+                onKeyDown={(e) => e.key === "Enter" && setSelected(p)}
+              >
                 <div className="projectHeader">
                   <h3 className="fx-title">{p.title}</h3>
                 </div>
@@ -204,13 +220,45 @@ export default function App() {
                 </ul>
 
                 <div className="projectLinks fx-links">
-                  <a className="btn" href={p.repoUrl} target="_blank" rel="noreferrer">
-                    Repositório
+                  <button
+                    className="btn primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelected(p);
+                    }}
+                    type="button"
+                  >
+                    <span className="material-symbols-rounded" aria-hidden="true">
+                      info
+                    </span>
+                    <span>Detalhes</span>
+                  </button>
+
+                  <a
+                    className="btn"
+                    href={p.repoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span className="material-symbols-rounded" aria-hidden="true">
+                      code
+                    </span>
+                    <span>Repositório</span>
                   </a>
 
                   {p.liveUrl ? (
-                    <a className="btn primary" href={p.liveUrl} target="_blank" rel="noreferrer">
-                      Ver online
+                    <a
+                      className="btn"
+                      href={p.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="material-symbols-rounded" aria-hidden="true">
+                        open_in_new
+                      </span>
+                      <span>Online</span>
                     </a>
                   ) : (
                     <span className="muted small">Deploy em breve</span>
@@ -323,6 +371,15 @@ export default function App() {
         <span>© {year} Joana Favaretto</span>
         <span className="muted">Portfólio em React publicado no GitHub Pages</span>
       </footer>
+    
+  
+  )
+
+      {/* MODAL */}
+      <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }
+
+
+        
