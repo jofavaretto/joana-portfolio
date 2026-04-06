@@ -1,16 +1,47 @@
 export type Project = {
   title: string;
-  description: string;        // curta (para o card)
-  details: string;            // longa (para o modal)
+  description: string;
+  details: string;
   highlights: string[];
   repoUrl: string;
   liveUrl?: string;
-
-  // novo:
-  images?: string[];          // caminhos dentro do public/
+  images?: string[];
+  category?: "dev" | "teaching";
 };
 
 export const projects: Project[] = [
+  {
+    title: "Empreende SC",
+    description:
+      "Plataforma de apoio ao empreendedorismo catarinense, conectando empreendedores a recursos, mentorias e oportunidades de crescimento.",
+    details:
+      "Projeto desenvolvido com foco em facilitar o acesso de empreendedores de Santa Catarina a recursos, mentorias e redes de apoio. Interface clara e objetiva para conectar pessoas ao ecossistema empreendedor do estado.",
+    highlights: [
+      "Plataforma de conexão para empreendedores SC",
+      "Interface focada em usabilidade e clareza",
+      "Integração com recursos e mentorias locais",
+    ],
+    repoUrl: "https://github.com/jofavaretto/empreendesc",
+    liveUrl: "",
+    images: [],
+    category: "dev",
+  },
+  {
+    title: "Gestão de Quadras",
+    description:
+      "Sistema de gerenciamento de reservas e controle de quadras esportivas com foco em praticidade e organização.",
+    details:
+      "Sistema completo para gestão de quadras esportivas: agendamento de horários, controle de reservas, visualização de disponibilidade e gestão de clientes. Desenvolvido para otimizar o dia a dia de estabelecimentos esportivos.",
+    highlights: [
+      "Agendamento e controle de reservas",
+      "Visualização de disponibilidade em tempo real",
+      "Gestão de clientes e histórico",
+    ],
+    repoUrl: "https://github.com/jofavaretto/winner-sistema",
+    liveUrl: "",
+    images: [],
+    category: "dev",
+  },
   {
     title: "My Bands (BandasJeff)",
     description:
@@ -28,6 +59,7 @@ export const projects: Project[] = [
       "projects/my-bands/2.jpg",
       "projects/my-bands/3.jpg",
     ],
+    category: "dev",
   },
   {
     title: "Mix Saúde (Loja Natural)",
@@ -42,6 +74,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/jofavaretto/MixSaude",
     images: ["projects/mix-saude/1.jpg", "projects/mix-saude/2.jpg"],
+    category: "dev",
   },
   {
     title: "Meu Lembrete (em andamento)",
@@ -56,6 +89,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/jofavaretto/meu-lembrete",
     images: ["projects/meu-lembrete/1.jpg"],
+    category: "dev",
   },
   {
     title: "Jogo Quiz (Segurança do Trabalho)",
@@ -70,6 +104,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/jofavaretto/jogoQuiz-Seguranca-do-Trabalho",
     images: ["projects/quiz/1.jpg", "projects/quiz/2.jpg"],
+    category: "dev",
   },
   {
     title: "Calculadora IMC Simples",
@@ -84,6 +119,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/jofavaretto/CalculadoraImc",
     images: ["projects/imc/1.jpg"],
+    category: "dev",
   },
   {
     title: "Simulação de Algoritmos de Ordenação",
@@ -98,6 +134,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/jofavaretto/AlgoritmosOrdenacao",
     images: ["projects/ordenacao/1.jpg", "projects/ordenacao/2.jpg"],
+    category: "dev",
   },
   {
     title: "Site de Festa de Família",
@@ -112,5 +149,6 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/jofavaretto/festa-familia",
     images: ["projects/festa/1.jpg", "projects/festa/2.jpg"],
+    category: "dev",
   },
 ];

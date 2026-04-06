@@ -1,385 +1,390 @@
-import "./styles.css";
-import { useState } from "react";
-import { projects } from "./data/projects";
-import type { Project } from "./data/projects";
+import { useState, useEffect, useRef } from "react";
 import AICircuitBackground from "./components/AICircuitBackground";
 import ProjectModal from "./components/ProjectModal";
+import { projects } from "./data/projects";
+import type { Project } from "./data/projects";
+import "./App.css";
 
-function SectionTitle({
-  eyebrow,
-  title,
-  subtitle,
-}: {
-  eyebrow: string;
-  title: string;
-  subtitle?: string;
-}) {
-  return (
-    <div className="sectionHeader">
-      <div>
-        <p className="sectionEyebrow">{eyebrow}</p>
-        <h2 className="sectionTitleAlt">{title}</h2>
-      </div>
-      {subtitle ? <p className="sectionDesc">{subtitle}</p> : null}
-    </div>
-  );
-}
+const teachingSubjects = [
+  {
+    icon: "laptop_mac",
+    title: "Informática",
+    description:
+      "Ferramentas digitais, lógica de programação e aplicações práticas de tecnologia no cotidiano.",
+    level: "Básico/Intermediário",
+  },
+  {
+    icon: "terminal",
+    title: "Programação",
+    description:
+      "Raciocínio lógico, resolução de problemas e aplicação da programação em contextos reais.",
+    level: "Ensino Técnico",
+  },
+  // ── Adicione mais disciplinas aqui ──────────────────────────────────────
+  // {
+  //   icon: "science",
+  //   title: "Sua Disciplina",
+  //   description: "Descrição da disciplina.",
+  //   level: "Nível de ensino",
+  // },
+];
+
+type Tab = "dev" | "teaching" | "about" | "contact";
 
 export default function App() {
-  const year = new Date().getFullYear();
-  const [selected, setSelected] = useState<Project | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab>("dev");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+
+  const navItems: { id: Tab; label: string; icon: string }[] = [
+    { id: "dev", label: "Projetos", icon: "code" },
+    { id: "teaching", label: "Professora", icon: "school" },
+    { id: "about", label: "Sobre", icon: "person" },
+    { id: "contact", label: "Contato", icon: "mail" },
+  ];
 
   return (
-    <div className="page">
-      <AICircuitBackground className="bgCanvas" />
+    <div className="app">
+      {theme === "dark"
+        ? <AICircuitBackground className="bg-canvas" />
+        : <div className="bg-canvas bg-light-pattern" aria-hidden="true" />
+      }
+      <div className="grain" aria-hidden="true" />
+      <div className="glow glow-purple" aria-hidden="true" />
+      <div className="glow glow-green" aria-hidden="true" />
 
-      <header className="header">
-        <a className="brand" href="#top">
-          Joana Favaretto<span className="brandDot">.</span>
+      {/* ══ NAVBAR ══ */}
+      <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
+        <a href="#hero" className="navbar-logo">
+          <span className="logo-bracket">&lt;</span>
+          <span className="logo-name">JF</span>
+          <span className="logo-bracket">/&gt;</span>
         </a>
 
-        <nav className="nav">
-          <a href="#sobre">Sobre</a>
-          <a href="#skills">Skills</a>
-          <a href="#projetos">Projetos</a>
-          <a href="#pedagogia">Práticas</a>
-          <a href="#contato">Contato</a>
-        </nav>
-      </header>
+        <ul className="nav-links">
+          {navItems.map((n) => (
+            <li key={n.id}>
+              <button
+                className={`nav-btn ${activeTab === n.id ? "active" : ""}`}
+                onClick={() => { setActiveTab(n.id); setMenuOpen(false); }}
+              >
+                <span className="material-symbols-rounded nav-icon">{n.icon}</span>
+                {n.label}
+              </button>
+            </li>
+          ))}
+        </ul>
 
-      <main id="top" className="container">
-        {/* HERO */}
-        <section className="hero">
-          <div className="heroText">
-            <p className="kicker">Front-End React • UI • APIs</p>
+        <div className="nav-right">
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Alternar tema">
+            <span className="material-symbols-rounded">
+              {theme === "dark" ? "light_mode" : "dark_mode"}
+            </span>
+          </button>
+          <button className="hamburger" onClick={() => setMenuOpen((o) => !o)} aria-label="Menu">
+            <span className="material-symbols-rounded">{menuOpen ? "close" : "menu"}</span>
+          </button>
+        </div>
 
-            <h1 className="heroTitle">Joana Favaretto</h1>
-            <p className="heroSubtitle">Portfólio Profissional</p>
+        {menuOpen && (
+          <div className="mobile-menu">
+            {navItems.map((n) => (
+              <button
+                key={n.id}
+                className={`mobile-nav-btn ${activeTab === n.id ? "active" : ""}`}
+                onClick={() => { setActiveTab(n.id); setMenuOpen(false); }}
+              >
+                <span className="material-symbols-rounded">{n.icon}</span>
+                {n.label}
+              </button>
+            ))}
+            <button className="mobile-nav-btn" onClick={toggleTheme}>
+              <span className="material-symbols-rounded">
+                {theme === "dark" ? "light_mode" : "dark_mode"}
+              </span>
+              {theme === "dark" ? "Tema claro" : "Tema escuro"}
+            </button>
+          </div>
+        )}
+      </nav>
 
-            <p className="heroLead">
-              Front-End React com foco em componentização, UI consistente e integração com APIs.
-              Entrego com organização, refino e atenção à experiência do usuário.
+      {/* ══ HERO ══ */}
+      <section id="hero" className="hero" ref={heroRef}>
+        <div className="hero-inner">
+          <div className="hero-photo-wrap">
+            <div className="hero-photo-ring" />
+            <img src={`${import.meta.env.BASE_URL}profile.jpg`} alt="Joana Favaretto" className="hero-photo" />
+            <div className="hero-photo-badge">
+              <span className="material-symbols-rounded">verified</span>
+            </div>
+          </div>
+
+          <div className="hero-text">
+            <p className="hero-eyebrow">
+              <span className="dot dot-green" />
+              Disponível para projetos
             </p>
-
-            <div className="heroActions">
-              <a className="btn primary" href="#projetos">
+            <h1 className="hero-name">
+              Joana<br />
+              <span className="hero-name-accent">Favaretto</span>
+            </h1>
+            <div className="hero-roles">
+              <span className="role-chip">
+                <span className="material-symbols-rounded">code</span>
+                Dev Frontend
+              </span>
+              <span className="role-divider">·</span>
+              <span className="role-chip">
+                <span className="material-symbols-rounded">school</span>
+                Professora
+              </span>
+            </div>
+            <p className="hero-bio">
+              Construindo interfaces que importam e formando pessoas que
+              transformam — entre o código e a sala de aula.
+            </p>
+            <div className="hero-cta">
+              <button className="cta-primary" onClick={() => setActiveTab("dev")}>
+                <span className="material-symbols-rounded">folder_open</span>
                 Ver projetos
-              </a>
-              <a className="btn primary" href="#contato">
+              </button>
+              <button className="cta-secondary" onClick={() => setActiveTab("contact")}>
+                <span className="material-symbols-rounded">mail</span>
                 Contato
-              </a>
+              </button>
             </div>
           </div>
+        </div>
+        <div className="hero-scroll-hint">
+          <span className="material-symbols-rounded scroll-icon">keyboard_arrow_down</span>
+        </div>
+      </section>
 
-          <aside className="heroMedia">
-            <div className="photoFrame">
-              <img
-                className="heroPhoto"
-                src={`${import.meta.env.BASE_URL}profile.jpg`}
-                alt="Foto da Joana Favaretto"
-              />
-              <div className="photoGlow" aria-hidden="true" />
-            </div>
-
-            <div className="miniCard">
-              <div className="miniTitle">Sobre Mim</div>
-              <ul className="miniList">
-                <li>Projetos em React e TypeScript</li>
-                <li>Integração com APIs REST/JSON</li>
-                <li>Práticas pedagógicas aplicadas a software</li>
-              </ul>
-            </div>
-          </aside>
-        </section>
-
-        {/* ESPECIALIDADES */}
-        <section className="section">
-          <SectionTitle eyebrow="O que eu faço" title="Especialidades" />
-
-          <div className="servicesGrid">
-            <article className="serviceCard">
-              <div className="serviceIcon">{"</>"}</div>
-              <h3>Componentização em React</h3>
-              <p>
-                Componentes reutilizáveis, padronização visual e organização para manutenção fácil.
-              </p>
-            </article>
-
-            <article className="serviceCard">
-              <div className="serviceIcon">{"{ }"}</div>
-              <h3>Integração com APIs</h3>
-              <p>Consumo REST/JSON (fetch/axios), estados de loading/erro e UX previsível.</p>
-            </article>
-
-            <article className="serviceCard">
-              <div className="serviceIcon">
-                <span className="material-symbols-rounded" aria-hidden="true">
-                  speed
-                </span>
-              </div>
-              <h3>Refino e performance</h3>
-              <p>Correção de bugs, melhorias incrementais e noções de acessibilidade e desempenho.</p>
-            </article>
-
-            <article className="serviceCard">
-              <div className="serviceIcon">⇄</div>
-              <h3>Entrega iterativa</h3>
-              <p>
-                Evolução com feedback e alinhamento com produto/design, focando valor para o usuário.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        {/* SOBRE */}
-        <section id="sobre" className="section">
-          <SectionTitle eyebrow="Sobre" title="Como eu trabalho" />
-
-          <div className="grid2">
-            <div className="card">
-              <h3>Meu foco</h3>
-              <p className="muted">
-                Interfaces em React com consistência visual, componentização e integração com APIs.
-                Gosto de código limpo, padronizado e sustentável.
-              </p>
-            </div>
-
-            <div className="card">
-              <h3>Meu diferencial</h3>
-              <p className="muted">
-                Experiência ensinando e conduzindo projetos me deu clareza, comunicação, trabalho em
-                equipe, empatia e principalmente hábito de evoluir com feedback. Adoro aprender e
-                resolver problemas de forma criativa e inovadora.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* SKILLS */}
-        <section id="skills" className="section">
-          <SectionTitle eyebrow="Stack" title="Skills" />
-
-          <div className="card">
-            <div className="pillGrid">
-              {[
-                "React",
-                "TypeScript",
-                "JavaScript",
-                "HTML/CSS",
-                "Consumo de API (REST/JSON)",
-                "Git/GitHub (branches/PR)",
-                "Componentização",
-                "Responsividade",
-                "Adaptabilidade",
-                "UI/UX básico",
-                "Comunicação",
-                "Organização",
-                "Evolução iterativa",
-                "Resolução de problemas",
-                "Aprendizado contínuo",
-                "Criatividade",
-                "Trabalho em equipe",
-                "Autonomia",
-              ].map((s) => (
-                <span key={s} className="pill">
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+      {/* ══ MAIN ══ */}
+      <main className="main-content">
 
         {/* PROJETOS */}
-        <section id="projetos" className="section">
-          <SectionTitle
-            eyebrow="Portfólio"
-            title="Projetos"
-            subtitle="Clique em um projeto para ver detalhes, imagens e links."
-          />
-
-          <div className="projectsGrid">
-            {projects.map((p) => (
-              <article
-                key={p.title}
-                className="card projectCard fx-card"
-                role="button"
-                tabIndex={0}
-                onClick={() => setSelected(p)}
-                onKeyDown={(e) => e.key === "Enter" && setSelected(p)}
-              >
-                <div className="projectHeader">
-                  <h3 className="fx-title">{p.title}</h3>
-                </div>
-
-                <p className="muted">{p.description}</p>
-
-                <ul className="bullets bulletsSmall">
-                  {p.highlights.map((h) => (
-                    <li key={h}>{h}</li>
-                  ))}
-                </ul>
-
-                <div className="projectLinks fx-links">
-                  <button
-                    className="btn primary"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelected(p);
-                    }}
-                    type="button"
-                  >
-                    <span className="material-symbols-rounded" aria-hidden="true">
-                      info
+        {activeTab === "dev" && (
+          <section className="section fade-in">
+            <div className="section-header">
+              <h2 className="section-title"><span className="title-accent">//</span> Projetos</h2>
+              <p className="section-sub">Aplicações reais — do código à experiência do usuário.</p>
+            </div>
+            <div className="projects-grid">
+              {projects.map((p, i) => (
+                <article
+                  key={p.title}
+                  className={`project-card ${i < 2 ? "project-card--featured" : ""}`}
+                  style={{ animationDelay: `${i * 0.07}s` }}
+                  onClick={() => setSelectedProject(p)}
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && setSelectedProject(p)}
+                  role="button"
+                  aria-label={`Abrir projeto ${p.title}`}
+                >
+                  {i < 2 && (
+                    <span className="featured-badge">
+                      <span className="material-symbols-rounded">star</span>
+                      Destaque
                     </span>
-                    <span>Detalhes</span>
-                  </button>
-
-                  <a
-                    className="btn"
-                    href={p.repoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <span className="material-symbols-rounded" aria-hidden="true">
-                      code
-                    </span>
-                    <span>Repositório</span>
-                  </a>
-
-                  {p.liveUrl ? (
-                    <a
-                      className="btn"
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span className="material-symbols-rounded" aria-hidden="true">
-                        open_in_new
-                      </span>
-                      <span>Online</span>
-                    </a>
-                  ) : (
-                    <span className="muted small">Deploy em breve</span>
                   )}
+                  <div className="card-top">
+                    <span className="material-symbols-rounded card-icon">
+                      {i === 0 ? "rocket_launch" : i === 1 ? "sports_tennis" : "folder_code"}
+                    </span>
+                    <span className="card-arrow material-symbols-rounded">arrow_outward</span>
+                  </div>
+                  <h3 className="card-title">{p.title}</h3>
+                  <p className="card-desc">{p.description}</p>
+                  <div className="card-footer">
+                    <span className="card-tag">React</span>
+                    <span className="card-tag">TypeScript</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* PROFESSORA */}
+        {activeTab === "teaching" && (
+          <section className="section fade-in">
+            <div className="section-header">
+              <h2 className="section-title"><span className="title-accent">//</span> Professora</h2>
+              <p className="section-sub">Formando pessoas com tecnologia, prática e visão de futuro.</p>
+            </div>
+
+            <div className="teaching-banner">
+              <div className="teaching-banner-icon">
+                <span className="material-symbols-rounded">school</span>
+              </div>
+              <div>
+                <h3 className="teaching-banner-title">Educação que transforma</h3>
+                <p className="teaching-banner-text">
+                  Atuo como professora conectando o conteúdo curricular à realidade tecnológica e ao mercado de trabalho.
+                  Metodologia ativa, projetos práticos e aprendizado que vai além da apostila.
+                </p>
+              </div>
+            </div>
+
+            <h3 className="subjects-heading">
+              <span className="material-symbols-rounded">menu_book</span>
+              Disciplinas que ministro
+            </h3>
+
+            <div className="subjects-grid">
+              {teachingSubjects.map((s) => (
+                <div className="subject-card" key={s.title}>
+                  <div className="subject-icon-wrap">
+                    <span className="material-symbols-rounded subject-icon">{s.icon}</span>
+                  </div>
+                  <div>
+                    <h4 className="subject-title">{s.title}</h4>
+                    <span className="subject-level">{s.level}</span>
+                    <p className="subject-desc">{s.description}</p>
+                  </div>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+              ))}
+              <div className="subject-card subject-card--soon">
+                <div className="subject-icon-wrap subject-icon-wrap--soon">
+                  <span className="material-symbols-rounded subject-icon">add_circle</span>
+                </div>
+                <div>
+                  <h4 className="subject-title">+ Em breve</h4>
+                  <span className="subject-level">Adicionando mais disciplinas...</span>
+                  <p className="subject-desc">Novas disciplinas serão incluídas conforme a atuação for expandindo.</p>
+                </div>
+              </div>
+            </div>
 
-        {/* PRÁTICAS */}
-        <section id="pedagogia" className="section">
-          <SectionTitle eyebrow="Experiência" title="Práticas Pedagógicas" />
+            <div className="teaching-stats">
+              <div className="stat-item">
+                <span className="stat-number">+</span>
+                <span className="stat-label">Alunos formados</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">2+</span>
+                <span className="stat-label">Disciplinas</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">100%</span>
+                <span className="stat-label">Dedicação</span>
+              </div>
+            </div>
+          </section>
+        )}
 
-          <div className="projectsGrid">
-            <article className="card">
-              <h3>Metodologias Ativas e Projetos</h3>
-              <ul className="bullets">
-                <li>Aprendizagem baseada em projetos reais</li>
-                <li>Feedback contínuo e ciclos iterativos</li>
-                <li>Portfólio (GitHub) como evidência de evolução</li>
-                <li>Desafios práticos com feedback contínuo</li>
-              </ul>
-            </article>
-
-            <article className="card">
-              <h3>Avaliação formativa</h3>
-              <ul className="bullets">
-                <li>Rubricas: critérios objetivos (UI, código, organização, entrega)</li>
-                <li>Checkpoints por sprint para revisão e melhoria</li>
-                <li>Autoavaliação e reflexão técnica</li>
-                <li>Apresentações de projetos e evolução técnica para auxiliar na comunicação</li>
-              </ul>
-            </article>
-
-            <article className="card">
-              <h3>Didática aplicada a desenvolvimento</h3>
-              <ul className="bullets">
-                <li>Explicação por camadas: base, prática guiada e desafios</li>
-                <li>Foco em leitura de código, debug e boas práticas</li>
-                <li>Contexto real: requisitos, usuários, produto, setores da indústria</li>
-              </ul>
-            </article>
-
-            <article className="card">
-              <h3>Organização e ferramentas</h3>
-              <ul className="bullets">
-                <li>Sprints e entregas iterativas</li>
-                <li>Git/GitHub: commits, branches e PR como rotina</li>
-                <li>Documentação enxuta: README, checklist e padrões</li>
-              </ul>
-            </article>
-          </div>
-        </section>
+        {/* SOBRE */}
+        {activeTab === "about" && (
+          <section className="section fade-in">
+            <div className="section-header">
+              <h2 className="section-title"><span className="title-accent">//</span> Sobre mim</h2>
+            </div>
+            <div className="about-grid">
+              <div className="about-text-block">
+                <p className="about-text">
+                  Sou <strong>Joana Favaretto</strong> — desenvolvedora frontend e professora, apaixonada por
+                  construir experiências digitais que fazem sentido para pessoas reais.
+                </p>
+                <p className="about-text">
+                  Atuo nas duas frentes com o mesmo propósito: levar tecnologia de forma acessível, prática e
+                  transformadora — seja em linhas de código ou em sala de aula.
+                </p>
+                <p className="about-text">
+                  Em constante evolução, com foco em React, TypeScript e projetos que impactam comunidades.
+                </p>
+              </div>
+              <div className="skills-block">
+                <h3 className="skills-heading">Stack & Ferramentas</h3>
+                <div className="skills-list">
+                  {["React","TypeScript","JavaScript","HTML5","CSS3","Git","Vite","Node.js"].map((s) => (
+                    <span key={s} className="skill-tag">{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* CONTATO */}
-        <section id="contato" className="section">
-          <SectionTitle eyebrow="Contato" title="Vamos conversar" />
-
-          <div className="card">
-            <div className="contactGrid">
-              <a className="contactLink" href="mailto:joanafavaretto180@gmail.com">
-                <span className="material-symbols-rounded" aria-hidden="true">
-                  mail
+        {activeTab === "contact" && (
+          <section className="section fade-in">
+            <div className="section-header">
+              <h2 className="section-title"><span className="title-accent">//</span> Contato</h2>
+              <p className="section-sub">Vamos conversar sobre projetos, parcerias ou oportunidades.</p>
+            </div>
+            <div className="contact-grid">
+              <a className="contact-card" href="https://github.com/jofavaretto" target="_blank" rel="noreferrer">
+                <span className="contact-card-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
                 </span>
-                <span>E-mail</span>
+                <div>
+                  <div className="contact-card-title">GitHub</div>
+                  <div className="contact-card-sub">@jofavaretto</div>
+                </div>
+                <span className="material-symbols-rounded contact-arrow">arrow_outward</span>
               </a>
 
-              <a
-                className="contactLink"
-                href="https://github.com/jofavaretto"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span className="material-symbols-rounded" aria-hidden="true">
-                  code
+              <a className="contact-card" href="https://www.linkedin.com/in/joanafavaretto/" target="_blank" rel="noreferrer">
+                <span className="contact-card-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
                 </span>
-                <span>GitHub</span>
+                <div>
+                  <div className="contact-card-title">LinkedIn</div>
+                  <div className="contact-card-sub">Joana Favaretto</div>
+                </div>
+                <span className="material-symbols-rounded contact-arrow">arrow_outward</span>
               </a>
 
-              <a
-                className="contactLink"
-                href="https://www.linkedin.com/in/jofavaretto"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span className="material-symbols-rounded" aria-hidden="true">
-                  work
+              <a className="contact-card" href="mailto:joanafavaretto180@gmail.com">
+                <span className="contact-card-icon">
+                  <span className="material-symbols-rounded" style={{ fontSize: 28 }}>mail</span>
                 </span>
-                <span>LinkedIn</span>
-              </a>
-
-              <a
-                className="contactLink"
-                href="https://wa.me/554991824099"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span className="material-symbols-rounded" aria-hidden="true">
-                  chat
-                </span>
-                <span>WhatsApp</span>
+                <div>
+                  <div className="contact-card-title">E-mail</div>
+                  <div className="contact-card-sub">joanafavaretto180@gmail.com</div>
+                </div>
+                <span className="material-symbols-rounded contact-arrow">arrow_outward</span>
               </a>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
+      {/* ══ FOOTER ══ */}
       <footer className="footer">
-        <span>© {year} Joana Favaretto</span>
-        <span className="muted">Portfólio em React publicado no GitHub Pages</span>
+        <span className="footer-logo">
+          <span className="logo-bracket">&lt;</span>JF<span className="logo-bracket">/&gt;</span>
+        </span>
+        <button className="theme-toggle-footer" onClick={toggleTheme}>
+          <span className="material-symbols-rounded">
+            {theme === "dark" ? "light_mode" : "dark_mode"}
+          </span>
+          {theme === "dark" ? "Tema claro" : "Tema escuro"}
+        </button>
+        <span className="footer-copy">Feito com React · {new Date().getFullYear()}</span>
       </footer>
-    
-  
-  )
 
-      {/* MODAL */}
-      <ProjectModal project={selected} onClose={() => setSelected(null)} />
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </div>
   );
 }
-
-
-        
