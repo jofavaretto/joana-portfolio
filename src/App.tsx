@@ -36,20 +36,13 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const heroRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   const navItems: { id: Tab; label: string; icon: string }[] = [
     { id: "dev", label: "Projetos", icon: "code" },
