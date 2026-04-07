@@ -6,6 +6,7 @@ export type Project = {
   repoUrl: string;
   liveUrl?: string;
   images?: string[];
+  tags?: string[];
   category?: "dev" | "teaching";
 };
 
@@ -13,33 +14,54 @@ export const projects: Project[] = [
   {
     title: "Empreende SC",
     description:
-      "Plataforma de apoio ao empreendedorismo catarinense, conectando empreendedores a recursos, mentorias e oportunidades de crescimento.",
+      "Plataforma de gestão de empreendimentos catarinenses com dashboard, filtros por segmento, CRUD completo e design responsivo.",
     details:
-      "Projeto desenvolvido com foco em facilitar o acesso de empreendedores de Santa Catarina a recursos, mentorias e redes de apoio. Interface clara e objetiva para conectar pessoas ao ecossistema empreendedor do estado.",
+      "Sistema desenvolvido para catalogar e gerenciar empreendimentos de Santa Catarina. Conta com dashboard de métricas (total, ativos, inativos, segmentos), listagem com busca por nome, município e empreendedor, filtros por segmento e status, formulário completo de cadastro/edição com validação, e suporte responsivo para mobile.",
     highlights: [
-      "Plataforma de conexão para empreendedores SC",
-      "Interface focada em usabilidade e clareza",
-      "Integração com recursos e mentorias locais",
+      "Dashboard com métricas: total, ativos, inativos e segmentos",
+      "Listagem com busca e filtros por segmento e status",
+      "CRUD completo de empreendimentos",
+      "Formulário com nome, município, CNPJ, segmento e contato",
+      "Tags coloridas por segmento (Tecnologia, Indústria, etc.)",
+      "Layout responsivo — funciona em mobile e desktop",
     ],
     repoUrl: "https://github.com/jofavaretto/empreendesc",
     liveUrl: "",
-    images: [],
+    tags: ["HTML", "CSS", "JavaScript"],
+    images: [
+      "projects/empreende-sc/1-dashboard.png",
+      "projects/empreende-sc/2-lista-empreendimentos.png",
+      "projects/empreende-sc/3-busca-filtros.png",
+      "projects/empreende-sc/4-editar-empreendimento.png",
+      "projects/empreende-sc/5-mobile.png",
+    ],
     category: "dev",
   },
   {
     title: "Gestão de Quadras",
     description:
-      "Sistema de gerenciamento de reservas e controle de quadras esportivas com foco em praticidade e organização.",
+      "Sistema completo para gestão de quadras esportivas: agenda visual, reservas fixas e avulsas, controle de pagamentos e cadastro de alunos.",
     details:
-      "Sistema completo para gestão de quadras esportivas: agendamento de horários, controle de reservas, visualização de disponibilidade e gestão de clientes. Desenvolvido para otimizar o dia a dia de estabelecimentos esportivos.",
+      "Sistema desenvolvido para otimizar o dia a dia de estabelecimentos esportivos. Conta com agenda mensal interativa com visualização por quadra e tipo de reserva, modal de detalhes do dia com horários livres e reservas pendentes, formulário completo para criação de reservas (data, quadra, horário, cliente, tipo e valor), além de módulos de pagamentos e mensalidades de alunos.",
     highlights: [
-      "Agendamento e controle de reservas",
-      "Visualização de disponibilidade em tempo real",
-      "Gestão de clientes e histórico",
+      "Agenda mensal com reservas por cor e quadra",
+      "Modal de dia com horários livres e reservas",
+      "Formulário de reserva com tipos avulso e fixo",
+      "Módulo de pagamentos e mensalidades",
+      "Importação de horários fixos",
+      "Status de pagamento: Pago / Pendente",
+      "Painel com total, pagos, pendentes e valor a receber",
+      "Integração com WhatsApp por cliente",
     ],
     repoUrl: "https://github.com/jofavaretto/winner-sistema",
     liveUrl: "",
-    images: [],
+    tags: ["JavaScript", "HTML", "CSS"],
+    images: [
+      "projects/gestao-quadras/2-agenda-calendario.png",
+      "projects/gestao-quadras/1-reservas-dia.png",
+      "projects/gestao-quadras/3-formulario-reserva.png",
+      "projects/gestao-quadras/4-painel-pagamentos.png",
+    ],
     category: "dev",
   },
   {
@@ -54,6 +76,7 @@ export const projects: Project[] = [
       "Refino de interface e evolução incremental",
     ],
     repoUrl: "https://github.com/jofavaretto/my-bands",
+    tags: ["React", "TypeScript"],
     images: [
       "projects/my-bands/1.jpg",
       "projects/my-bands/2.jpg",
@@ -73,6 +96,7 @@ export const projects: Project[] = [
       "Organização do projeto para manutenção",
     ],
     repoUrl: "https://github.com/jofavaretto/MixSaude",
+    tags: ["HTML", "CSS", "JavaScript"],
     images: ["projects/mix-saude/1.jpg", "projects/mix-saude/2.jpg"],
     category: "dev",
   },
@@ -88,6 +112,7 @@ export const projects: Project[] = [
       "Foco em manutenção e clareza do código",
     ],
     repoUrl: "https://github.com/jofavaretto/meu-lembrete",
+    tags: ["React", "TypeScript"],
     images: ["projects/meu-lembrete/1.jpg"],
     category: "dev",
   },
@@ -103,6 +128,7 @@ export const projects: Project[] = [
       "Ajustes e correções por iteração",
     ],
     repoUrl: "https://github.com/jofavaretto/jogoQuiz-Seguranca-do-Trabalho",
+    tags: ["JavaScript", "HTML", "CSS"],
     images: ["projects/quiz/1.jpg", "projects/quiz/2.jpg"],
     category: "dev",
   },
@@ -118,6 +144,7 @@ export const projects: Project[] = [
       "Código simples e fácil de manter",
     ],
     repoUrl: "https://github.com/jofavaretto/CalculadoraImc",
+    tags: ["JavaScript", "HTML", "CSS"],
     images: ["projects/imc/1.jpg"],
     category: "dev",
   },
@@ -133,6 +160,7 @@ export const projects: Project[] = [
       "Evolução por refinamentos",
     ],
     repoUrl: "https://github.com/jofavaretto/AlgoritmosOrdenacao",
+    tags: ["JavaScript", "HTML"],
     images: ["projects/ordenacao/1.jpg", "projects/ordenacao/2.jpg"],
     category: "dev",
   },
@@ -148,6 +176,7 @@ export const projects: Project[] = [
       "Refinos de layout e experiência",
     ],
     repoUrl: "https://github.com/jofavaretto/festa-familia",
+    tags: ["HTML", "CSS"],
     images: ["projects/festa/1.jpg", "projects/festa/2.jpg"],
     category: "dev",
   },

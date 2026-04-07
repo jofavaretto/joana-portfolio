@@ -60,10 +60,7 @@ export default function App() {
 
   return (
     <div className="app">
-      {theme === "dark"
-        ? <AICircuitBackground className="bg-canvas" />
-        : <div className="bg-canvas bg-light-pattern" aria-hidden="true" />
-      }
+      <AICircuitBackground className="bg-canvas" />
       <div className="grain" aria-hidden="true" />
       <div className="glow glow-purple" aria-hidden="true" />
       <div className="glow glow-green" aria-hidden="true" />
@@ -91,11 +88,6 @@ export default function App() {
         </ul>
 
         <div className="nav-right">
-          <button className="theme-toggle" onClick={toggleTheme} aria-label="Alternar tema">
-            <span className="material-symbols-rounded">
-              {theme === "dark" ? "light_mode" : "dark_mode"}
-            </span>
-          </button>
           <button className="hamburger" onClick={() => setMenuOpen((o) => !o)} aria-label="Menu">
             <span className="material-symbols-rounded">{menuOpen ? "close" : "menu"}</span>
           </button>
@@ -113,12 +105,7 @@ export default function App() {
                 {n.label}
               </button>
             ))}
-            <button className="mobile-nav-btn" onClick={toggleTheme}>
-              <span className="material-symbols-rounded">
-                {theme === "dark" ? "light_mode" : "dark_mode"}
-              </span>
-              {theme === "dark" ? "Tema claro" : "Tema escuro"}
-            </button>
+
           </div>
         )}
       </nav>
@@ -126,44 +113,50 @@ export default function App() {
       {/* ══ HERO ══ */}
       <section id="hero" className="hero" ref={heroRef}>
         <div className="hero-inner">
-          <div className="hero-photo-wrap">
-            <div className="hero-photo-ring" />
-            <img src={`${import.meta.env.BASE_URL}profile.jpg`} alt="Joana Favaretto" className="hero-photo" />
-            <div className="hero-photo-badge">
-              <span className="material-symbols-rounded">verified</span>
+          <div className="hero-photo-col">
+            <div className="hero-photo-wrap">
+              <div className="hero-photo-ring" />
+              <img src={`${import.meta.env.BASE_URL}profile.jpg`} alt="Joana Favaretto" className="hero-photo" />
+
             </div>
+            <p className="hero-eyebrow">
+              <span className="dot dot-green" />
+              Disponível para projetos e ideias
+            </p>
           </div>
 
           <div className="hero-text">
-            <p className="hero-eyebrow">
-              <span className="dot dot-green" />
-              Disponível para projetos
-            </p>
             <h1 className="hero-name">
-              Joana<br />
+              <span className="hero-name-first">Joana</span>
               <span className="hero-name-accent">Favaretto</span>
             </h1>
             <div className="hero-roles">
-              <span className="role-chip">
-                <span className="material-symbols-rounded">code</span>
-                Dev Frontend
+              <span className="role-chip role-chip--purple">
+                <span className="material-symbols-rounded">devices</span>
+                Full Stack
               </span>
-              <span className="role-divider">·</span>
-              <span className="role-chip">
+              <span className="role-chip role-chip--blue">
+                <span className="material-symbols-rounded">brush</span>
+                UX / Frontend
+              </span>
+              <span className="role-chip role-chip--green">
                 <span className="material-symbols-rounded">school</span>
                 Professora
               </span>
             </div>
-            <p className="hero-bio">
-              Construindo interfaces que importam e formando pessoas que
-              transformam — entre o código e a sala de aula.
-            </p>
+            <p className="hero-bio">Desenvolvedora Full Stack com foco em frontend e experiência do usuário — criando <span className="bio-highlight bio-highlight--purple">interfaces que encantam e convertem</span>, do banco de dados ao pixel final, com <span className="bio-highlight bio-highlight--green">UX centrado em pessoas reais</span>.</p>
             <div className="hero-cta">
-              <button className="cta-primary" onClick={() => setActiveTab("dev")}>
+              <button className="cta-primary" onClick={() => {
+                setActiveTab("dev");
+                setTimeout(() => document.querySelector(".main-content")?.scrollIntoView({ behavior: "smooth" }), 50);
+              }}>
                 <span className="material-symbols-rounded">folder_open</span>
                 Ver projetos
               </button>
-              <button className="cta-secondary" onClick={() => setActiveTab("contact")}>
+              <button className="cta-secondary" onClick={() => {
+                setActiveTab("contact");
+                setTimeout(() => document.querySelector(".main-content")?.scrollIntoView({ behavior: "smooth" }), 50);
+              }}>
                 <span className="material-symbols-rounded">mail</span>
                 Contato
               </button>
@@ -212,8 +205,9 @@ export default function App() {
                   <h3 className="card-title">{p.title}</h3>
                   <p className="card-desc">{p.description}</p>
                   <div className="card-footer">
-                    <span className="card-tag">React</span>
-                    <span className="card-tag">TypeScript</span>
+                    {(p.tags ?? ["React", "TypeScript"]).map((tag) => (
+                      <span key={tag} className="card-tag" data-tech={tag}>{tag}</span>
+                    ))}
                   </div>
                 </article>
               ))}
@@ -298,21 +292,24 @@ export default function App() {
             <div className="about-grid">
               <div className="about-text-block">
                 <p className="about-text">
-                  Sou <strong>Joana Favaretto</strong> — desenvolvedora frontend e professora, apaixonada por
-                  construir experiências digitais que fazem sentido para pessoas reais.
+                  Sou <strong>Joana Favaretto</strong> — desenvolvedora Full Stack com alma de frontend.
+                  Me importo profundamente com a experiência do usuário: cada detalhe de interface,
+                  cada interação e cada pixel conta.
                 </p>
                 <p className="about-text">
-                  Atuo nas duas frentes com o mesmo propósito: levar tecnologia de forma acessível, prática e
-                  transformadora — seja em linhas de código ou em sala de aula.
+                  Construo do backend ao frontend, mas é na camada visual e na usabilidade que
+                  coloco minha energia — acredito que tecnologia boa é aquela que as pessoas
+                  conseguem usar sem nem perceber o esforço por trás.
                 </p>
                 <p className="about-text">
-                  Em constante evolução, com foco em React, TypeScript e projetos que impactam comunidades.
+                  Também atuo como professora, levando esse mesmo olhar prático e humano
+                  para dentro da sala de aula.
                 </p>
               </div>
               <div className="skills-block">
                 <h3 className="skills-heading">Stack & Ferramentas</h3>
                 <div className="skills-list">
-                  {["React","TypeScript","JavaScript","HTML5","CSS3","Git","Vite","Node.js"].map((s) => (
+                  {["React","TypeScript","JavaScript","HTML5","CSS3","Node.js","Git","Vite","UX/UI","Figma"].map((s) => (
                     <span key={s} className="skill-tag">{s}</span>
                   ))}
                 </div>
@@ -375,12 +372,7 @@ export default function App() {
         <span className="footer-logo">
           <span className="logo-bracket">&lt;</span>JF<span className="logo-bracket">/&gt;</span>
         </span>
-        <button className="theme-toggle-footer" onClick={toggleTheme}>
-          <span className="material-symbols-rounded">
-            {theme === "dark" ? "light_mode" : "dark_mode"}
-          </span>
-          {theme === "dark" ? "Tema claro" : "Tema escuro"}
-        </button>
+
         <span className="footer-copy">Feito com React · {new Date().getFullYear()}</span>
       </footer>
 

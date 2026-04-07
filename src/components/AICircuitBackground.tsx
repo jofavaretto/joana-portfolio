@@ -124,20 +124,20 @@ export default function AICircuitBackground({ className }: Props) {
 
     const clear = () => {
       // fundo escuro com rastro (efeito “IA pensando”)
-      ctx.fillStyle = "rgba(2, 3, 10, 0.22)";
+      ctx.fillStyle = "rgba(10, 14, 35, 0.28)";
       ctx.fillRect(0, 0, w, h);
     };
 
     const drawGridGlow = () => {
       // glow de base (bem sutil) para dar profundidade
       const g1 = ctx.createRadialGradient(w * 0.2, h * 0.15, 0, w * 0.2, h * 0.15, Math.max(w, h));
-      g1.addColorStop(0, "rgba(124, 58, 237, 0.10)");
+      g1.addColorStop(0, "rgba(124, 58, 237, 0.05)");
       g1.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = g1;
       ctx.fillRect(0, 0, w, h);
 
       const g2 = ctx.createRadialGradient(w * 0.85, h * 0.25, 0, w * 0.85, h * 0.25, Math.max(w, h));
-      g2.addColorStop(0, "rgba(34, 197, 94, 0.07)");
+      g2.addColorStop(0, "rgba(34, 197, 94, 0.04)");
       g2.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = g2;
       ctx.fillRect(0, 0, w, h);
@@ -158,7 +158,7 @@ export default function AICircuitBackground({ className }: Props) {
 
       // trilhos (circuit traces)
       for (const p of paths) {
-        const alpha = p.w === 2 ? 0.18 : 0.12;
+        const alpha = p.w === 2 ? 0.09 : 0.06;
         ctx.strokeStyle = `hsla(${p.hue}, 95%, 65%, ${alpha})`;
         ctx.lineWidth = p.w;
         ctx.beginPath();
@@ -171,7 +171,7 @@ export default function AICircuitBackground({ className }: Props) {
       for (const n of nodes) {
         const pulse = 0.55 + 0.45 * Math.sin(t * 1.4 + (n.x + n.y) * 0.005);
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255,255,255,${0.03 + pulse * 0.02})`;
+        ctx.fillStyle = `rgba(255,255,255,${0.015 + pulse * 0.01})`;
         ctx.arc(n.x, n.y, 1.6 + pulse * 0.8, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -197,13 +197,13 @@ export default function AICircuitBackground({ className }: Props) {
 
         // brilho
         ctx.beginPath();
-        ctx.fillStyle = `hsla(${s.hue}, 95%, 72%, 0.90)`;
+        ctx.fillStyle = `hsla(${s.hue}, 95%, 72%, 0.55)`;
         ctx.arc(x, y, s.size, 0, Math.PI * 2);
         ctx.fill();
 
         // aura
         ctx.beginPath();
-        ctx.fillStyle = `hsla(${s.hue}, 95%, 72%, 0.14)`;
+        ctx.fillStyle = `hsla(${s.hue}, 95%, 72%, 0.07)`;
         ctx.arc(x, y, s.size * 5, 0, Math.PI * 2);
         ctx.fill();
       }
